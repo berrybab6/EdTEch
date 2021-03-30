@@ -12,14 +12,15 @@ class UsersApi{
   static Future<List<User>> getUsers() async{
     var token = userdata.read('token');
     var response = await client.get(Uri.http(_baseUrl, "users/"),headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization':'Token $token'
+      'Content-Type': 'application/json; charset=UTF-8'
+//      'Authorization':'Token $token'
     },);
 
     if(response.statusCode == 200) {
       List<User> userModel = [];
       Map<String, dynamic> myMap = json.decode(response.body);
       List<dynamic> users = myMap["users"];
+
       users.forEach((user) {
         userModel.add(
             User.fromJson(user)
@@ -27,8 +28,9 @@ class UsersApi{
       });
 
       return userModel;
-    }else{
-      return [];
+    }else {
+      print("i am Here");
+      return null;
     }
       //
 //    }else{

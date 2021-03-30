@@ -15,10 +15,14 @@ class UserController extends GetxController{
 
   void fetchUsers() async {
     try {
+
       isLoading(true);
       var response = await UsersApi.getUsers();
-
-      if(response !=null){
+      if(response == null){
+        print("HERE ALSOOOOO");
+        Get.toNamed('/');
+      }
+      else if(response!=null){
         userList.assignAll(response);
       }
     }finally{
