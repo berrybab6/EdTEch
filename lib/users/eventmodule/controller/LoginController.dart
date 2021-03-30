@@ -8,6 +8,8 @@ class LoginController extends GetxController {
   TextEditingController emailLController;
   TextEditingController passwordLController;
 
+
+
   @override
   void onInit() {
     emailLController = TextEditingController();
@@ -20,10 +22,21 @@ class LoginController extends GetxController {
         barrierDismissible: false);
     var request = await UsersApi.userLogin(
         emailLController.text, passwordLController.text);
-    if (request != null) {
-     Get.back();
-      Get.offNamed('/users');
-    } else {
+    if (request !=null) {
+      Get.back();
+      if(request.admin) {
+
+        Get.offNamed('/users');
+//        return request;
+      }
+      else if(request.student ){
+        print("Heyyy");
+        Get.offNamed('/home',arguments: request);
+//        return request;
+      }
+    }
+
+    else {
       print("Error Found");
     }
 

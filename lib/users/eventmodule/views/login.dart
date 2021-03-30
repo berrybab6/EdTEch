@@ -100,7 +100,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin{
               SizedBox(height: 20,),
               TextFormField(
                 controller: loginController.passwordLController,
-                keyboardType: TextInputType.visiblePassword,
+                keyboardType: TextInputType.text,
+                obscureText: true,
 //                initialValue: "",
                 autofocus: false,
                 decoration: InputDecoration(
@@ -118,6 +119,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin{
                   onTapUp: _tapUp,
                   onTap: () async{
                     loginController.apiLogin();
+
 //                    print(loginController.userLogin());
 //                    print("Login Succesfull");
 //                    if(loginController.isLoading.value==false){

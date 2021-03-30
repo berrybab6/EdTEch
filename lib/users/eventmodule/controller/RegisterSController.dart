@@ -7,10 +7,10 @@ class RegisterSController extends GetxController{
   TextEditingController fullNameController;
   TextEditingController emailController;
   TextEditingController passwordController;
-  var dep =0.obs;
+  var departmentSelection ="Select your Department".obs;
   TextEditingController usernameController;
   TextEditingController batchController;
-  Map<int,String> myMap = {7:'Software', 10:'Select your department',6:'Chemical',1:'Electrical', 2:'Civil', 3:'Mechanical',4:"Biomed",5:"IT"};
+//  Map<int,String> myMap = {7:'Software', 10:'Select your department',6:'Chemical',1:'Electrical', 2:'Civil', 3:'Mechanical',4:"Biomed",5:"IT"};
 
 
   @override
@@ -25,19 +25,23 @@ class RegisterSController extends GetxController{
   }
 
 
-  void apiRegister(int dept, String depName) async {
+  void apiRegister(String dep) async {
     Get.dialog(Center(child: CircularProgressIndicator()),
         barrierDismissible: false);
 //    dep(dept);
-    var departmentName = "";
-    if(dept != 10){
-      departmentName = depName;
+    var departmentName;
+
+    if(dep == "Select your Department"){
+      departmentName = "";
+    }else{
+        departmentName = dep;
     }
 
     var request = await UsersApi.register(
         emailController.text, passwordController.text,1, usernameController.text, fullNameController.text,batchController.text,departmentName);
     if (request != null) {
       Get.back();
+      print(dep);
       Get.offNamed('/');
     } else {
       print("Error Found");

@@ -1,15 +1,18 @@
 import 'package:ed_tech/accounts/CreateAccount.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'accounts/contSignup.dart';
 
+import 'users/eventmodule/views/UserHome.dart';
 import 'users/eventmodule/views/createStudent.dart';
 import 'users/eventmodule/views/createTeacher.dart';
 import 'users/eventmodule/views/login.dart';
 import 'users/eventmodule/views/users.dart';
 
-void main() {
+void main() async{
+  await GetStorage.init();
   runApp(MyApp());
 }
 
@@ -26,6 +29,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page:()=>Login() ),
         GetPage(name:'/users', page:()=>UserListView() ,
         transition: Transition.leftToRight),
+        GetPage(name: '/home', page: ()=>Home()),
         GetPage(name: '/register', page: ()=>CreateTeacher()),
         GetPage(name: '/registerS', page: ()=>CreateStudent()),
       ],

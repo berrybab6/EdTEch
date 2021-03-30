@@ -74,13 +74,20 @@ List<String> spinnerItems = [
 ] ;
 
 
-class SignupStudentForm extends StatelessWidget {
+class SignupStudentForm extends StatefulWidget {
+  @override
+  _SignupStudentFormState createState() => _SignupStudentFormState();
+}
+
+
+
+class _SignupStudentFormState extends State<SignupStudentForm> {
 
 
   RegisterSController regStud = Get.put(RegisterSController());
 //  Future<User> _userLogin;
 
-  String departmentSelection = "Select your department";
+//  String departmentSelection = "Select your department";
 
 
   Map<String, int> myMap = {'Software': 7, 'Select your department':10,'Chemical':6, 'Electrical': 1, 'Civil': 2, 'Mechanical':3,"Biomed":4,"IT":5};
@@ -99,45 +106,76 @@ class SignupStudentForm extends StatelessWidget {
 
 
   Padding departmentDrop(){
-    return
-      Padding(
+        return Padding(
         padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
         child:Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
 
+
               Container(
-                color: Colors.grey[200],
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                alignment: Alignment.center,
-                child: DropdownButton<String>(
-                  value: departmentSelection,
-                  icon: Icon(Icons.arrow_drop_down),
-                  iconSize: 24,
-                  elevation: 10,
+              color: Colors.grey[200],
+              margin: EdgeInsets.symmetric(horizontal:10),
+              child: Obx((){
+                return DropdownButton<String>(items: [
+                  DropdownMenuItem(child: Text("Select your Department"),value: "Select your Department",),
+                  DropdownMenuItem(
+                      value: "Software",
+                      child: Text("Software")),
+                  DropdownMenuItem(
+                      value: "IT",
+                      child: Text("IT")),
+                  DropdownMenuItem(child: Text("Chemical"),value: "Chemical",),
+                  DropdownMenuItem(value: "Electrical",child:Text("Electrical")),
+                  DropdownMenuItem(child: Text("Civil"),value: "Civil",),
+                  DropdownMenuItem(child:Text("Biomed"),value:"Biomed")
+                ],
+                  value: regStud.departmentSelection.value,
+                  hint: Text("Select your Department"),
+                  isExpanded: true,
+                  onChanged: (selectedValue){
+                    regStud.departmentSelection.value = selectedValue;
+                  },
+                );
+              }),
+        ),
 
-                  style: TextStyle(
-                      color: Colors.black,
-
-                      fontSize: 22),
-//                                       underline: Container(
-//                                         height: 2,
-//                                         color: Colors.black,
-//                                       ),
-                  onChanged: (String data) {
-//                    setState(() {
-//                      departmentSelection = data;
-//                    });},
-                    },
-
-                  items: departmentSpinner.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value??""),
-                    );
-                  }).toList(),
-                ),
-              ),
+//
+//
+//              Container(
+//                color: Colors.grey[200],
+//                margin: EdgeInsets.symmetric(horizontal: 10),
+//                alignment: Alignment.center,
+//                child: DropdownButton<String>(
+//                  value: regStud.departmentSelection.value,
+//                  icon: Icon(Icons.arrow_drop_down),
+//                  iconSize: 24,
+//                  elevation: 10,
+//
+//                  style: TextStyle(
+//                      color: Colors.black,
+//
+//                      fontSize: 22),
+////                                       underline: Container(
+////                                         height: 2,
+////                                         color: Colors.black,
+////                                       ),
+//                  onChanged: (String data) {
+//                    regStud.departmentSelection(data);
+////                    setState(() {
+////                      regdepartmentSelection = data;
+////                    });
+////                    },
+//                  },
+//
+//                  items: departmentSpinner.map<DropdownMenuItem<String>>((String value) {
+//                    return DropdownMenuItem<String>(
+//                      value: value,
+//                      child: Text(value??""),
+//                    );
+//                  }).toList(),
+//                ),
+//              ),
 
 //            Text('Selected Item = ' + '$dropdownValue' ?? '',
 //                style: TextStyle
@@ -145,8 +183,9 @@ class SignupStudentForm extends StatelessWidget {
 //                    color: Colors.black)),
             ]),
       );
+    }
 
-  }
+
 
 
   @override
@@ -219,35 +258,38 @@ class SignupStudentForm extends StatelessWidget {
        ));
   }
 
-SpringButton registerButton(BuildContext context) {
-  return SpringButton(
-    SpringButtonType.OnlyScale,
-    Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[800],
-          borderRadius: BorderRadius.circular(8.0),
+Widget registerButton(BuildContext context) {
+
+      return SpringButton(
+        SpringButtonType.OnlyScale,
+        Container(
+            decoration: BoxDecoration(
+              color: Colors.grey[800],
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            width: MediaQuery
+                .of(context)
+                .size
+                .width,
+            height: 50,
+            margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            child: Center(
+              child: Text('Register', style: TextStyle(fontSize: 22.0,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  letterSpacing: 1.5),),
+            )
         ),
-        width: MediaQuery
-            .of(context)
-            .size
-            .width,
-        height: 50,
-        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-        child: Center(
-          child: Text('Register', style: TextStyle(fontSize: 22.0,
-              color: Colors.white,
-              fontWeight: FontWeight.w400,
-              letterSpacing: 1.5),),
-        )
-    ),
-    scaleCoefficient: 0.9,
-    useCache: false,
-    onTap: () {
+        scaleCoefficient: 0.9,
+        useCache: false,
+        onTap: () {
 //          Navigator.of(context).pushNamed('/sidebar');
-    var a = myMap[departmentSelection];
-        regStud.apiRegister(a, departmentSelection);
-    },
-  );
+//    var a = myMap[regStud.departmentSelection.value];
+            regStud.apiRegister(regStud.departmentSelection.value);
+        },
+      );
+
+
 }
 
 
