@@ -1,3 +1,4 @@
+import 'package:ed_tech/users/eventmodule/controller/common/drawer.dart';
 import 'package:ed_tech/users/eventmodule/models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,6 +11,12 @@ class Home extends StatelessWidget {
     var data = Get.arguments as User;
 
     return Scaffold(
+      appBar: AppBar(
+
+      ),
+      drawer: Drawer(
+        child: CommonWidgets.sidebarList(context, data),
+      ),
         body: Center(
             child: Container(
               width: 300,

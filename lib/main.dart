@@ -5,7 +5,13 @@ import 'package:get_storage/get_storage.dart';
 
 import 'accounts/contSignup.dart';
 
+import 'users/eventmodule/controller/LoginController.dart';
 import 'users/eventmodule/views/UserHome.dart';
+import 'users/eventmodule/views/admin/adminhome.dart';
+import 'users/eventmodule/views/changePassword.dart';
+import 'users/eventmodule/views/commonView/ImageP.dart';
+import 'users/eventmodule/views/commonView/onBoard.dart';
+import 'users/eventmodule/views/commonView/userprofile.dart';
 import 'users/eventmodule/views/createStudent.dart';
 import 'users/eventmodule/views/createTeacher.dart';
 import 'users/eventmodule/views/login.dart';
@@ -18,6 +24,7 @@ void main() async{
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
+  LoginController _loginController = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -26,9 +33,14 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       defaultTransition:Transition.zoom,
       getPages: [
-        GetPage(name: '/', page:()=>Login() ),
+        GetPage(name: '/myAccounts', page: ()=>UserProfile()),
+        GetPage(name: '/edit', page:()=> ImageUploadPages()),
+        GetPage(name:'/', page: ()=>OnBoard()),
+        GetPage(name: '/login', page:()=>Login() ),
+        GetPage(name: '/admin',page: ()=>AdminHome()),
         GetPage(name:'/users', page:()=>UserListView() ,
         transition: Transition.leftToRight),
+        GetPage(name: '/changePassword', page:()=>ChangePassword()),
         GetPage(name: '/home', page: ()=>Home()),
         GetPage(name: '/register', page: ()=>CreateTeacher()),
         GetPage(name: '/registerS', page: ()=>CreateStudent()),

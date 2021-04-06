@@ -4,7 +4,10 @@ import 'package:ed_tech/users/eventmodule/models/User.dart';
 import 'package:flutter/material.dart';
 import 'package:folding_cell/folding_cell/widget.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import 'login.dart';
 
 
 // ignore: must_be_immutable
@@ -12,11 +15,12 @@ class UserListView extends StatelessWidget {
 //  final _foldingCellKey = GlobalKey<SimpleFoldingCellState>();
   UserController userController = Get.put(UserController());
   final LoginController _loginController = Get.find();
+  var userdata = GetStorage();
 
   @override
   Widget build(BuildContext context) {
     print("${_loginController.emailLController.text}");
-    return Scaffold(
+    return (userdata.read('isLoggedIn'))?Scaffold(
         appBar: AppBar(
           title: Center(child: Text(
             'Users: ${_loginController.emailLController.text}',style: TextStyle(
@@ -25,12 +29,15 @@ class UserListView extends StatelessWidget {
             fontWeight: FontWeight.bold
           ),
           ),),
-          toolbarHeight: 70,
+          toolbarHeight: 100,
+
           
-          backgroundColor: Colors.orange[900].withOpacity(0.8),
+          backgroundColor: Colors.deepOrange.withOpacity(0.6),
+
         ),
         body: Container(
-          color: Colors.orange[900].withOpacity(0.8),
+//          color:Colors.black,
+          color: Colors.deepOrangeAccent.withOpacity(0.8),
           alignment: Alignment.center,
           child: Obx((){
           if(userController.isLoading.value){
@@ -59,7 +66,7 @@ class UserListView extends StatelessWidget {
 
         ),
       ),
-      );
+      ):Login();
 
   }
 
@@ -84,7 +91,7 @@ class UserListView extends StatelessWidget {
                   GestureDetector(
                     child: CircleAvatar(
                       radius: 27,
-                      backgroundImage: AssetImage('assets/images/mish.jpg'),
+                        backgroundImage:NetworkImage('http://10.5.226.205:8000/users/images/${user.username}/')
                     ),
                   ),
                   SizedBox(width: 20.0,),
@@ -133,7 +140,7 @@ class UserListView extends StatelessWidget {
                   child: GestureDetector(
                     child: CircleAvatar(
                       radius: 41,
-                      backgroundImage: AssetImage('assets/images/mish.jpg'),
+                      backgroundImage:NetworkImage('http://10.5.226.205:8000/users/images/${user.username}/'),
                     ),
                   ),
                 ),

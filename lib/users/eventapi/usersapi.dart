@@ -1,19 +1,23 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:ed_tech/users/eventmodule/models/User.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class UsersApi{
   static var client = http.Client();
-  static var _baseUrl = "10.6.201.28:8000";
+  static var _baseUrl = "10.5.226.205:8000";
   static final userdata = GetStorage();
 
   static Future<List<User>> getUsers() async{
     var token = userdata.read('token');
-    var response = await client.get(Uri.http(_baseUrl, "users/"),headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8'
-//      'Authorization':'Token $token'
+    var response = await client.get(Uri.http(_baseUrl, "users/"),
+      headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization':'Token $token'
+//          'd14b6a14ed429ffc6e2c0975791db02417733d95'
     },);
 
     if(response.statusCode == 200) {
@@ -36,6 +40,53 @@ class UsersApi{
 //    }else{
 //      return [false, 'Error getting events'];
 //    }
+  }
+
+  static Future<dynamic> upLoadPicture(String _image) async{
+
+    var uri = Uri.parse('https://10.5.226.205:8000/users/detail/');
+
+    var request = http.MultipartRequest('POST', uri);
+    request.files.add(
+        http.MultipartFile(
+            'profile_url',
+            File(_image).readAsBytes().asStream(),
+            File(_image).lengthSync(),
+            filename: _image.split("/").last
+        )
+    );
+
+
+//    if (request.statusCode == 200) print('Uploaded!');
+
+    final response = await client.put(Uri.http('$_baseUrl','users/detail/'),body: <String, dynamic>{
+      'profile_url':_image
+    });
+
+  }
+
+  static Future<List<dynamic>> changePassword(String oldPassword, String newPassword) async{
+    var token = userdata.read('token');
+    final resp = await client.put(Uri.http('$_baseUrl', 'users/changePassword/'),
+        headers:<String,String> {
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization':'Token $token'
+        }
+        ,body:jsonEncode(<String, dynamic> {
+      'newpassword':newPassword,
+      'password':oldPassword
+    })
+    );
+
+    print("Change Password please work");
+    Map<String, dynamic> msg = json.decode(resp.body);
+    var message = msg['message'];
+    if(resp.statusCode == 201){
+
+      return [true,message];
+    }else{
+      return [false, message];
+    }
   }
 
   static Future<String> register(String email, String password, int role , String username, String fullName, String batch, String department) async{
@@ -110,6 +161,7 @@ class UsersApi{
 
 
 
+
     if (response.statusCode == 200 || response.statusCode == 201) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
@@ -119,6 +171,7 @@ class UsersApi{
      userdata.write('isLoggedIn', true);
      var token = myMap["token"];
      userdata.write('token', token);
+     print(user.id);
       return user;
 //          if(user.admin){
 //       return user;
@@ -135,6 +188,15 @@ class UsersApi{
   }
 
 
+
+  //////UPLOAD IMAGE
+static void uploadImage() async{
+
+//    Dio dio = Dio();
+//    FormData formatData = FormData();
+//    formatData.files.add('profile_url',)
+
+}
 
 
 }

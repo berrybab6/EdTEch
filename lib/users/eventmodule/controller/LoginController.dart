@@ -26,7 +26,7 @@ class LoginController extends GetxController {
       Get.back();
       if(request.admin) {
 
-        Get.offNamed('/users');
+        Get.toNamed('/admin', arguments: request);
 //        return request;
       }
       else if(request.student ){
