@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 class ImageUploadController extends GetxController{
     var selectedImagePath = ''.obs;
     var selectedImageSize = ''.obs;
+    var imageSelected = 0.obs;
+    var  imagefile = null.obs;
 
 
 void getImage(ImageSource imageSource) async {
@@ -25,8 +27,8 @@ void getImage(ImageSource imageSource) async {
   }
 }
 
-    void uploadImage(String _image) async{
-      var resp = await UsersApi.upLoadPicture(_image);
+    void uploadImage(File _image) async{
+      var resp = await UsersApi.uploadProfilePic(_image);
 
     }
 

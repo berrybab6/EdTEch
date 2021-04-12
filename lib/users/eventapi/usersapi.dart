@@ -11,6 +11,35 @@ class UsersApi{
   static var _baseUrl = "10.5.226.205:8000";
   static final userdata = GetStorage();
 
+
+//    `
+  static Future<String> uploadProfilePic(File profile) async{
+
+    String name = '';
+
+    var req = http.MultipartRequest('PUT', Uri.parse('$_baseUrl/users/detail/'));
+    req.files.add(
+        http.MultipartFile(
+            'profile_url',
+            File(profile.path).readAsBytes().asStream(),
+            File(profile.path).lengthSync(),
+            filename: profile.path.split("/").last
+        ));
+
+    try{
+      var res = await req.send();
+      name = await res.stream.transform(utf8.decoder).elementAt(0);
+    }catch(e){
+      print("//*** Error: $e");
+    }
+
+    return name;
+
+  }
+
+
+
+
   static Future<List<User>> getUsers() async{
     var token = userdata.read('token');
     var response = await client.get(Uri.http(_baseUrl, "users/"),
@@ -43,10 +72,12 @@ class UsersApi{
   }
 
   static Future<dynamic> upLoadPicture(String _image) async{
-
+    String token = userdata.read('token');
     var uri = Uri.parse('https://10.5.226.205:8000/users/detail/');
 
     var request = http.MultipartRequest('POST', uri);
+    Map<String, String> headers = { "Authorization": token};
+    request.headers.addAll(headers);
     request.files.add(
         http.MultipartFile(
             'profile_url',
@@ -55,6 +86,7 @@ class UsersApi{
             filename: _image.split("/").last
         )
     );
+    print('imagee: $_image');
 
 
 //    if (request.statusCode == 200) print('Uploaded!');

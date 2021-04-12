@@ -7,6 +7,9 @@ import 'accounts/contSignup.dart';
 
 import 'users/eventmodule/controller/LoginController.dart';
 import 'users/eventmodule/views/UserHome.dart';
+import 'users/eventmodule/views/Users/ResourcePage.dart';
+import 'users/eventmodule/views/Users/home.dart';
+import 'users/eventmodule/views/add_update.dart';
 import 'users/eventmodule/views/admin/adminhome.dart';
 import 'users/eventmodule/views/changePassword.dart';
 import 'users/eventmodule/views/commonView/ImageP.dart';
@@ -35,7 +38,8 @@ class MyApp extends StatelessWidget {
       getPages: [
         GetPage(name: '/myAccounts', page: ()=>UserProfile()),
         GetPage(name: '/edit', page:()=> ImageUploadPages()),
-        GetPage(name:'/', page: ()=>OnBoard()),
+//        GetPage(name:'/', page: ()=>OnBoard()),
+        GetPage(name:'/', page: ()=> ResourcePage()),
         GetPage(name: '/login', page:()=>Login() ),
         GetPage(name: '/admin',page: ()=>AdminHome()),
         GetPage(name:'/users', page:()=>UserListView() ,

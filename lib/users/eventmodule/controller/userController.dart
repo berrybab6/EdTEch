@@ -6,6 +6,7 @@ class UserController extends GetxController{
   var isLoading =true.obs;
 
   List<User> userList = List<User>.empty(growable: true).obs;
+  var isVisible = false.obs;
 
   @override
   void onInit() {

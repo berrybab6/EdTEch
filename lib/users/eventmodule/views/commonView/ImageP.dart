@@ -100,7 +100,7 @@ class ImageUploadPages extends StatelessWidget {
                     color: Colors.white
                   ),),),
                   onPressed: (){
-                    iController.uploadImage(iController.selectedImagePath.value);
+//                    iController.uploadImage(iController.selectedImagePath.value);
                   },
                 ),
               )
