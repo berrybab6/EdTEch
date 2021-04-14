@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 class UsersApi{
   static var client = http.Client();
-  static var _baseUrl = "10.5.226.205:8000";
+  static var _baseUrl = "10.5.211.42:8000";
   static final userdata = GetStorage();
 
 
@@ -73,7 +73,7 @@ class UsersApi{
 
   static Future<dynamic> upLoadPicture(String _image) async{
     String token = userdata.read('token');
-    var uri = Uri.parse('https://10.5.226.205:8000/users/detail/');
+    var uri = Uri.parse('https://10.5.211.42:8000/users/detail/');
 
     var request = http.MultipartRequest('POST', uri);
     Map<String, String> headers = { "Authorization": token};
@@ -202,6 +202,16 @@ class UsersApi{
      User user = User.fromJson(myMap['user']);
      userdata.write('isLoggedIn', true);
      var token = myMap["token"];
+     if(user.admin){
+     userdata.write('user', 1);}
+     else if(user.student){
+       userdata.write('user', 2);
+     }
+     else if(user.teacher){
+       userdata.write('user', 3);
+     }else{
+       userdata.write('user', 0);
+     }
      userdata.write('token', token);
      print(user.id);
       return user;
@@ -218,7 +228,6 @@ class UsersApi{
       throw Exception('Failed to load user');
     }
   }
-
 
 
   //////UPLOAD IMAGE

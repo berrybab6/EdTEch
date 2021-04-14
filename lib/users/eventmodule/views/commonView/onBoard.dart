@@ -1,6 +1,10 @@
 import 'dart:ui';
+import 'package:ed_tech/accounts/admin/adminpage.dart';
+import 'package:ed_tech/resources/resources_module/views/ResourcePage.dart';
+import 'package:ed_tech/users/eventmodule/views/admin/adminhome.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const items = [
@@ -52,118 +56,132 @@ class _OnBoardState extends State<OnBoard> {
     _notifier.dispose();
     super.dispose();
   }
-
+  var userData = GetStorage();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
 
-          // Custom Painter
-          AnimatedBuilder(
-            animation: _notifier,
-            builder: (_, __) => CustomPaint(
-              painter: FlowPainter(
-                context: context,
-                notifier: _notifier,
-                target: _button,
-                colors: items,
+    if(userData.read('isLoggedIn')) {
+      if (userData.read('user') == 1) {
+        return AdminHome();
+      } else if (userData.read('user') == 2 || userData.read('user') == 3) {
+        return ResourcePage();
+      }
+    }
+    else {
+      return (userData.read("isLoggedIn")) ? ResourcePage() : Scaffold(
+        body: Stack(
+            children: [
+
+              // Custom Painter
+              AnimatedBuilder(
+                animation: _notifier,
+                builder: (_, __) =>
+                    CustomPaint(
+                      painter: FlowPainter(
+                        context: context,
+                        notifier: _notifier,
+                        target: _button,
+                        colors: items,
+                      ),
+                    ),
               ),
-            ),
-          ),
 
 
-          // PageView
-          PageView.builder(
-            controller: _pageController,
-            itemCount: items.length,
-            itemBuilder: (c, i) => Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 100),
-                child: edTechText(titles[i], descriptions[i]),
-                ),
+              // PageView
+              PageView.builder(
+                controller: _pageController,
+                itemCount: items.length,
+                itemBuilder: (c, i) =>
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 100),
+                        child: edTechText(titles[i], descriptions[i]),
+                      ),
+                    ),
               ),
-            ),
 
 
-
-
-
-          // Anchor Button
-          IgnorePointer(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 100),
-                child: ClipOval(
-                  child: AnimatedBuilder(
-                    animation: _notifier,
-                    builder: (_, __) {
-                      final animatorVal =
-                          _notifier.value - _notifier.value.floor();
-                      double opacity = 0, iconPos = 0;
-                      int colorIndex;
-                      if (animatorVal < 0.5) {
-                        opacity = (animatorVal - 0.5) * -2;
-                        iconPos = 80 * -animatorVal;
-                        colorIndex = _notifier.value.floor() + 1;
-                      } else {
-                        colorIndex = _notifier.value.floor() + 2;
-                        iconPos = -80;
-                      }
-                      if (animatorVal > 0.9) {
-                        iconPos = -250 * (1 - animatorVal) * 10;
-                        opacity = (animatorVal - 0.9) * 10;
-                      }
-                      colorIndex = colorIndex % items.length;
-                      return SizedBox(
-                        key: _button,
-                        width: 80,
-                        height: 80,
-                        child: Transform.translate(
-                          offset: Offset(iconPos, 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: items[colorIndex],
+              // Anchor Button
+              IgnorePointer(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 100),
+                    child: ClipOval(
+                      child: AnimatedBuilder(
+                        animation: _notifier,
+                        builder: (_, __) {
+                          final animatorVal =
+                              _notifier.value - _notifier.value.floor();
+                          double opacity = 0,
+                              iconPos = 0;
+                          int colorIndex;
+                          if (animatorVal < 0.5) {
+                            opacity = (animatorVal - 0.5) * -2;
+                            iconPos = 80 * -animatorVal;
+                            colorIndex = _notifier.value.floor() + 1;
+                          } else {
+                            colorIndex = _notifier.value.floor() + 2;
+                            iconPos = -80;
+                          }
+                          if (animatorVal > 0.9) {
+                            iconPos = -250 * (1 - animatorVal) * 10;
+                            opacity = (animatorVal - 0.9) * 10;
+                          }
+                          colorIndex = colorIndex % items.length;
+                          return SizedBox(
+                            key: _button,
+                            width: 80,
+                            height: 80,
+                            child: Transform.translate(
+                              offset: Offset(iconPos, 0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: items[colorIndex],
+                                ),
+                                child: Icon(
+                                  Icons.chevron_right,
+                                  color: Colors.white.withOpacity(opacity),
+                                  size: 30,
+                                ),
+                              ),
                             ),
-                            child: Icon(
-                              Icons.chevron_right,
-                              color: Colors.white.withOpacity(opacity),
-                              size: 30,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              
-              width: 3*(MediaQuery.of(context).size.width)/4,
-              margin: EdgeInsets.only(bottom: 10),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(15)
-                ),
-              child: TextButton(
-                  onPressed: (){
-                    Get.toNamed('/login');
-                  },
-                child: Text("Get Started",style: TextStyle(fontSize: 30,color: Colors.black),),
-              ),
-            ),
-          )
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
 
-    ]
-      ),
-    );
+                  width: 3 * (MediaQuery
+                      .of(context)
+                      .size
+                      .width) / 4,
+                  margin: EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(15)
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Get.toNamed('/login');
+                    },
+                    child: Text("Get Started",
+                      style: TextStyle(fontSize: 30, color: Colors.black),),
+                  ),
+                ),
+              )
+
+            ]
+        ),
+      );
+    }
   }
 
 

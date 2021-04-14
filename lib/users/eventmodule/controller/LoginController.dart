@@ -31,7 +31,7 @@ class LoginController extends GetxController {
       }
       else if(request.student ){
         print("Heyyy");
-        Get.offNamed('/home',arguments: request);
+        Get.offNamed('/resource',arguments: request);
 //        return request;
       }
     }

@@ -3,10 +3,14 @@ import 'dart:convert';
 //import 'package:ed_tech/accounts/CreateAccount.dart';
 import 'package:ed_tech/accounts/UserArgument.dart';
 import 'package:ed_tech/accounts/UserData.dart';
+import 'package:ed_tech/accounts/admin/adminpage.dart';
+import 'package:ed_tech/resources/resources_module/views/ResourcePage.dart';
 import 'package:ed_tech/users/eventmodule/controller/LoginController.dart';
 import 'package:ed_tech/users/eventmodule/models/User.dart';
+import 'package:ed_tech/users/eventmodule/views/admin/adminhome.dart';
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 //import 'CreateAccount.dart';
@@ -20,6 +24,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> with SingleTickerProviderStateMixin{
   double _scale;
   AnimationController _controller;
+  var userData = GetStorage();
   final LoginController loginController = Get.put(LoginController());
 
   final _formKey = GlobalKey<FormState>();
@@ -55,7 +60,15 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin{
 
     final UserArgument args = ModalRoute.of(context).settings.arguments;
     _scale = 1 - _controller.value;
-    return  Scaffold(
+
+    if(userData.read('isLoggedIn')) {
+      if (userData.read('user') == 1) {
+        return AdminHome();
+      } else if (userData.read('user') == 2 || userData.read('user') == 3) {
+        return ResourcePage();
+      }
+    }else{
+    return  (userData.read("isLoggedIn"))? (userData.read("user")==1)?AdminPage():ResourcePage():Scaffold(
 
         body: Container(
 
@@ -162,7 +175,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin{
               ),
 
             ],
-          ),));}
+          ),));
+    }
+    }
 
 
 //          FutureBuilder<User>(

@@ -118,6 +118,7 @@ class CommonWidgets{
               onTap: (){
                   userdata.write('isLoggedIn', false);
                   userdata.write('token', '');
+                  userdata.write('user', 0);
                 Get.toNamed('/');
 //            Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CreateTeacher()));
               },
