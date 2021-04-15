@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 class ResourceController extends GetxController{
   var isLoading =true.obs;
 
-  List<Resource> userList = List<Resource>.empty(growable: true).obs;
+  List<Resource> resList = List<Resource>.empty(growable: true).obs;
   var isVisible = false.obs;
 
   @override
@@ -24,7 +24,7 @@ class ResourceController extends GetxController{
         Get.toNamed('/');
       }
       else if(response!=null){
-        userList.assignAll(response);
+        resList.assignAll(response);
       }
     }finally{
       isLoading(false);

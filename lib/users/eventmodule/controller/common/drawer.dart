@@ -200,11 +200,19 @@ class CommonWidgets{
 
   static UserAccountsDrawerHeader userAccount(User user){
     return UserAccountsDrawerHeader(
-      accountName: Text('${user.username}',style: TextStyle(
+      accountName:
+      Text(
+//        '${user.username}',
+        'MishMish',
+        style: TextStyle(
         fontSize: 22.0,
 
       ),),
-      accountEmail: Text('${user.email}',style: GoogleFonts.pacifico(
+      accountEmail:
+      Text(
+//          '${user.email}',
+          'mish@gmail.com',
+          style: GoogleFonts.pacifico(
           textStyle: TextStyle(
               fontSize: 24.0,
               color:Colors.white
@@ -213,8 +221,8 @@ class CommonWidgets{
       currentAccountPicture: GestureDetector(
         child: CircleAvatar(
 //          backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREDoSNa-bR2mY_CTu1uxBpsCJ5_StKSsKqdQ&usqp=CAU'),
-           backgroundImage:NetworkImage('http://10.5.226.205:8000/users/images/${user.username}/'),
-//          backgroundImage: AssetImage('assets/images/mish.jpg'),
+//           backgroundImage:NetworkImage('http://10.5.226.205:8000/users/images/${user.username}/'),
+          backgroundImage: AssetImage('assets/images/mish.jpg'),
         ),
       ),
       decoration:BoxDecoration(
